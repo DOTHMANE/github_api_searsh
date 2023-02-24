@@ -1,0 +1,85 @@
+<div class="m-1">
+  <h1>Github Api Search</h1>
+  <div>
+    <div class="container justify-content-center">
+      <%= form_with url: "/repositories", method: :get do |form| %>
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-6">
+              <h5>Filters</h5>
+              <%= form.label :name, class: "form-check-label" %>
+              <%= form.check_box :name, class: "form-check-input me-3" %>
+              <%= form.label :topics, class: "form-check-label" %>
+              <%= form.check_box :topics, class: "form-check-input me-3" %>
+              <%= form.label :description, class: "form-check-label" %>
+              <%= form.check_box :description, class: "form-check-input me-3" %>
+              <%= form.label :readme, class: "form-check-label" %>
+              <%= form.check_box :readme, class: "form-check-input me-3" %>
+            </div>
+            <div class="col-3">
+              <h5>Sorting</h5>
+              <%= form.select :sort, options_for_select([["Best match", ""], ["Most stars", "s:stars"], ["Most forks", "s:forks"]]), class: "form-select" %>
+            </div>
+            <div class="col-3">
+              <h5>Page size</h5>
+              <%= form.select :per_page, options_for_select([20, 30, 50, 100]), class: "form-select" %>
+            </div>
+          </div>
+
+          <div class="row mt-5">
+            <div class="col-8">
+              <%= form.search_field :search, class: "input-group-text text-start", required: true, style: "width: 100%" %>
+            </div>
+            <div class="col-4">
+              <%= form.button "Search", type: "submit", :class => "btn btn-primary", style: "width: 100%" %>
+            </div>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+    <% unless @error.present? %>
+      <% if @repositories.any? %>
+        <div class="container text-center justify-content-center mt-5">
+          <button type="button" class="btn btn-link <%= @req.page.to_i < 2 ? 'disabled' : ' ' %>"><%= link_to 'Previous', repositories_path(query: @req.query, page: @req.page.to_i - 1) %></button>
+          |
+          <button type="button" class="btn btn-link"><%= link_to 'Next', repositories_path(query: @req.query, page: @req.page.to_i + 1) %></button>
+        </div>
+        <div class="row">
+          <% @repositories.each do |repository| %>
+            <div class="col-4 mb-4">
+              <div class="card" style="width: 100%; height: 200px">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <a href=<%= repository['html_url'] %> class="card-link"><%= repository['full_name'] %></a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted"><%= repository['name'] %></h6>
+
+                  <p class="card-text"><%= repository['description'] %></p>
+                  <% repository['topics'].each do |topic| %>
+                    <span class="badge rounded-pill text-bg-success"><%= topic %></span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="container text-center justify-content-center mt-5">
+          <button type="button" class="btn btn-link <%= @req.page.to_i < 2 ? 'disabled' : ' ' %>"><%= link_to 'Previous', repositories_path(query: @req.query, page: @req.page.to_i - 1) %></button>
+          |
+          <button type="button" class="btn btn-link"><%= link_to 'Next', repositories_path(query: @req.query, page: @req.page.to_i + 1) %></button>
+        </div>
+      <% else %>
+        <div class="alert alert-success m-5 text-center" role="alert">
+          No results were found
+        </div>
+      <% end %>
+    <% else %>
+      <div class="alert alert-danger m-5 text-center" role="alert">
+        An error occurred: <%= @error %>
+      </div>
+    <% end %>
+
+  </div>
+
+</div>
+

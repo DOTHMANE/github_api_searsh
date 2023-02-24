@@ -29,7 +29,7 @@ class GithubApiService
     query += ' in:topics' if params['topics'] == '1'
     query += ' in:description' if params['description'] == '1'
     query += ' in:readme' if params['readme'] == '1'
-    query += params['sort'] if params['readme'].present?
+    query += params['sort'] if params['sort'].present?
 
     query
   end

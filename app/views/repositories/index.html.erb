@@ -68,10 +68,6 @@
           |
           <button type="button" class="btn btn-link"><%= link_to 'Next', repositories_path(query: @req.query, page: @req.page.to_i + 1) %></button>
         </div>
-      <% else %>
-        <div class="alert alert-success m-5 text-center" role="alert">
-          No results were found
-        </div>
       <% end %>
     <% else %>
       <div class="alert alert-danger m-5 text-center" role="alert">

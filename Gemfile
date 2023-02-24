@@ -44,6 +44,7 @@ gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.2.2'
 gem 'cssbundling-rails', '~> 1.1'
 
+gem 'faraday'
 
 # Use Sass to process CSS
 # gem "sassc-rails"
